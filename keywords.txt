@@ -1,0 +1,24 @@
+###########################################
+# Syntax Coloring Map For LCD_1602_RUS_ALL
+###########################################
+
+###########################################
+# Datatypes (KEYWORD1)
+###########################################
+
+LCD_1602_RUS_ALL	KEYWORD1
+
+###########################################
+# Methods and Functions (KEYWORD2)
+###########################################
+
+print	KEYWORD2
+clear	KEYWORD2
+setCursor	KEYWORD2
+getCursorCol	KEYWORD2
+getCursorRow	KEYWORD2
+asciiutf8	KEYWORD2
+
+###########################################
+# Constants (LITERAL1)
+###########################################
