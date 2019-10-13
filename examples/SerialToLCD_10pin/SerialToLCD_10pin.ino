@@ -21,7 +21,7 @@ void setup()
 {
   lcd.begin(16, 2);
   lcd.print(L"Ввод с монитора");
-  lcd.setCursor(0,1);
+  lcd.setCursor(0, 1);
   lcd.print(L"порта");
   // initialize the serial communications:
   Serial.begin(9600);
@@ -29,7 +29,7 @@ void setup()
 
 void loop() {
   unsigned char str;
-  
+
   // when characters arrive over the serial port...
   if (Serial.available())
   {
@@ -37,7 +37,7 @@ void loop() {
     delay(100);
     // clear the screen
     lcd.clear();
-    lcd.setCursor(0,0);
+    lcd.setCursor(0, 0);
     // read all the available characters
     while (Serial.available() > 0)
     {
