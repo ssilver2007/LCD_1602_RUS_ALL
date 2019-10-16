@@ -103,25 +103,9 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         cursor_col++;
       }
     }
-    void print(int val, int base) {
-      cursor_col += BASE::print(val, base);
-    }
-    void print(unsigned int val, int base) {
-      cursor_col += BASE::print(val, base);
-    }
-    void print(long val, int base) {
-      cursor_col += BASE::print(val, base);
-    }
-    void print(unsigned long val, int base) {
-      cursor_col += BASE::print(val, base);
-    }
-    void print(char val, int base) {
-      cursor_col += BASE::print(val, base);
-    }
-    void print(unsigned char val, int base) {
-      cursor_col += BASE::print(val, base);
-    }
-    void print(double val, int base) {
+    
+    template <typename T> void print(T val, int base)
+    {
       cursor_col += BASE::print(val, base);
     }
 
