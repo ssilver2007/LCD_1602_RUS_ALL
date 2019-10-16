@@ -13,12 +13,12 @@ LCD_1602_RUS_ALL	KEYWORD1
 # Methods and Functions (KEYWORD2)
 ###########################################
 
-print	KEYWORD2
-clear	KEYWORD2
-setCursor	KEYWORD2
-getCursorCol	KEYWORD2
-getCursorRow	KEYWORD2
-ascii_win1251	KEYWORD2
+print KEYWORD2
+clear KEYWORD2
+setCursor KEYWORD2
+getCursorCol  KEYWORD2
+getCursorRow  KEYWORD2
+ascii_win1251 KEYWORD2
 ascii_utf8  KEYWORD2
 
 ###########################################
