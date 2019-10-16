@@ -13,13 +13,16 @@
    ends to +5V and ground
    wiper to LCD VO pin (pin 3)
 */
+//Тип подключения дисплея: 1 - по шине I2C, 2 - десятиконтактное. Обязательно указывать ДО подключения библиотеки
+//Если этого не сделать, при компиляции возникнет ошибка: "LCD type connect has not been declared"
+#define _LCD_TYPE 2
 #include <LCD_1602_RUS_ALL.h>
 
 //Выделим два переопределяемых символа
-LCD_1602_RUS_10PIN lcd(8, 9, 4, 5, 6, 7, 2);//For LCD Keypad Shield
-//                                      ^^^ количество пользовательских символов
-//LCD_1602_RUS_10PIN lcd(12, 11, 5, 4, 3, 2, 2);
-//                                          ^^^ количество пользовательских символов
+LCD_1602_RUS <LiquidCrystal> lcd(8, 9, 4, 5, 6, 7, 2);//For LCD Keypad Shield
+//                                                ^^^ количество пользовательских символов
+//LCD_1602_RUS <LiquidCrystal> lcd(12, 11, 5, 4, 3, 2, 2);
+//                                                    ^^^ количество пользовательских символов
 
 uint8_t symbol_one[8] = {
   B01110,
@@ -49,9 +52,9 @@ void setup()
 
   // Print a message to the LCD.
   lcd.setCursor(6, 0);
-  lcd.print(L"Свои");
+  lcd.print("Свои");
   lcd.setCursor(2, 1);
-  lcd.print(L"символы:");
+  lcd.print("символы:");
 
   //Переназначаем свои символы - с индексами 6 и 7
   lcd.createChar(6, symbol_one);

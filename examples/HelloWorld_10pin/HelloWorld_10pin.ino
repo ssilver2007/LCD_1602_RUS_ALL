@@ -13,22 +13,25 @@
    ends to +5V and ground
    wiper to LCD VO pin (pin 3)
 */
+//Тип подключения дисплея: 1 - по шине I2C, 2 - десятиконтактное. Обязательно указывать ДО подключения библиотеки
+//Если этого не сделать, при компиляции возникнет ошибка: "LCD type connect has not been declared"
+#define _LCD_TYPE 2
 #include <LCD_1602_RUS_ALL.h>
 
-//LCD_1602_RUS_10PIN lcd(12, 11, 5, 4, 3, 2);
-LCD_1602_RUS_10PIN lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
+//LCD_1602_RUS <LiquidCrystal> lcd(12, 11, 5, 4, 3, 2);
+LCD_1602_RUS <LiquidCrystal> lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
 
 void setup()
 {
   String str;
-  str = "на русском";
+  str = "язык";
 
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   // Print a message to the LCD.
-  lcd.setCursor(1, 0);
-  lcd.print("Можно печатать");
-  lcd.setCursor(3, 1);
+  lcd.setCursor(4, 0);
+  lcd.print("Русский");
+  lcd.setCursor(6, 1);
   lcd.print(str);
 }
 

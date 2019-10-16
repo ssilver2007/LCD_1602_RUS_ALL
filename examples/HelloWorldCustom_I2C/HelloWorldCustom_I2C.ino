@@ -1,9 +1,13 @@
 //Пример для подключения дисплея по шине I2C
+//
+//Тип подключения дисплея: 1 - по шине I2C, 2 - десятиконтактное. Обязательно указывать ДО подключения библиотеки
+//Если этого не сделать, при компиляции возникнет ошибка: "LCD type connect has not been declared"
+#define _LCD_TYPE 1
 #include <LCD_1602_RUS_ALL.h>
 
 //Выделим два переопределяемых символа
-LCD_1602_RUS_I2C lcd(0x27, 16, 2, 2);
-//                               ^^^ количество пользовательских символов
+LCD_1602_RUS <LiquidCrystal_I2C> lcd(0x27, 16, 2, 2);
+//                                               ^^^ количество пользовательских символов
 
 uint8_t symbol_one[8] = {
   B01110,
@@ -28,13 +32,13 @@ uint8_t symbol_two[8] = {
 
 void setup()
 {
-  lcd.init();                      // initialize the lcd
-  // Print a message to the LCD.
+  lcd.init(); // Инициализация LCD
+  // Печать сообщения на LCD
   lcd.backlight();
   lcd.setCursor(6, 0);
-  lcd.print(L"Свои");
+  lcd.print("Свои");
   lcd.setCursor(2, 1);
-  lcd.print(L"символы:");
+  lcd.print("символы:");
 
   //Переназначаем свои символы - с индексами 6 и 7
   lcd.createChar(6, symbol_one);
