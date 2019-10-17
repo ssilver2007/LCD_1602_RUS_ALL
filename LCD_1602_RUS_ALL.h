@@ -45,7 +45,6 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     LCD_1602_RUS (uint8_t lcd_Addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t user_custom_symbols = 0) : BASE (lcd_Addr, lcd_cols, lcd_rows)//Конструктор для подключения I2C
     {
       max_symbol_count = 8 - user_custom_symbols;
-      symbol_index = 0;
       cursor_col = 0;
       cursor_row = 0;
       ResetAllIndex();//Сброс значений индексов (неинициализированы = 255)
@@ -54,7 +53,6 @@ template <class BASE> class LCD_1602_RUS : public BASE {
                   uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t user_custom_symbols = 0) : BASE (rs, enable, d0, d1, d2, d3)//Конструктор для подключения 10-pin
     {
       max_symbol_count = 8 - user_custom_symbols;
-      symbol_index = 0;
       cursor_col = 0;
       cursor_row = 0;
       ResetAllIndex();//Сброс значений индексов (неинициализированы = 255)
@@ -198,7 +196,6 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         symbol_index++;
         if (symbol_index >= max_symbol_count)
         {
-          symbol_index = 0;
           ResetAllIndex();
         }
       }
