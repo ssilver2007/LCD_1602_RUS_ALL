@@ -257,6 +257,12 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       index_rus_ee = 255;
       index_rus_yu = 255;
       index_rus_ya = 255;
+      index_ukr_G = 255;
+      index_ukr_g = 255;
+      index_ukr_EE = 255;
+      index_ukr_ee = 255;
+      index_ukr_II = 255;
+      index_ukr_ii = 255;
     }
 
     void printwc(const wchar_t _chr) {
@@ -453,6 +459,31 @@ template <class BASE> class LCD_1602_RUS : public BASE {
           memcpy_PF(rus_, (_uint_farptr_t)rus_ya, 8);
           CharSetToLCD((uint8_t *)rus_, &index_rus_ya);
           break;
+        //Украинские буквы  
+        case 0x490: //укр. Г
+          memcpy_PF(rus_, (_uint_farptr_t)ukr_G, 8);
+          CharSetToLCD((uint8_t *)rus_, &index_ukr_G);
+          break;
+        case 0x491: //укр. г
+          memcpy_PF(rus_, (_uint_farptr_t)ukr_g, 8);
+          CharSetToLCD((uint8_t *)rus_, &index_ukr_g);
+          break;
+        case 0x404: //укр. Е
+          memcpy_PF(rus_, (_uint_farptr_t)ukr_EE, 8);
+          CharSetToLCD((uint8_t *)rus_, &index_ukr_EE);
+          break;
+        case 0x454: //укр. е
+          memcpy_PF(rus_, (_uint_farptr_t)ukr_ee, 8);
+          CharSetToLCD((uint8_t *)rus_, &index_ukr_ee);
+          break;
+        case 0x407: //укр. I
+          memcpy_PF(rus_, (_uint_farptr_t)ukr_II, 8);
+          CharSetToLCD((uint8_t *)rus_, &index_ukr_II);
+          break;
+        case 0x457: //укр. i
+          memcpy_PF(rus_, (_uint_farptr_t)ukr_ii, 8);
+          CharSetToLCD((uint8_t *)rus_, &index_ukr_ii);
+          break;
         //Русский алфавит, использующий одинаковые с английским алфавитом символы
         case 1040: //А
           BASE::print("A");
@@ -588,6 +619,12 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     uint8_t index_rus_ee;
     uint8_t index_rus_yu;
     uint8_t index_rus_ya;
+    uint8_t index_ukr_G;
+    uint8_t index_ukr_g;
+    uint8_t index_ukr_EE;
+    uint8_t index_ukr_ee;
+    uint8_t index_ukr_II;
+    uint8_t index_ukr_ii;
 };
 
 #endif
