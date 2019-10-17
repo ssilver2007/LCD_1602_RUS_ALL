@@ -57,7 +57,7 @@ void loop() {
     {
       // display each character to the LCD
       w_str[0] = Serial.read();
-      if((w_str[0] == 0xD0)||(w_str[0] == 0xD1))
+      if(w_str[0] > 0x7F)
         w_str[1] = Serial.read();//Если кириллица, то читаем второй байт
       lcd.print(lcd.ascii_utf8(w_str));//Вывод на экран LCD, в т.ч. по-русски. Перевод из ASCII в UTF-8.
     }
