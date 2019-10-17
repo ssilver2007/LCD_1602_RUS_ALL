@@ -530,11 +530,11 @@ const uint8_t ukr_EE[8] PROGMEM = {
 const uint8_t ukr_ee[8] PROGMEM = {
   0b00000,
   0b00000,
-  0b01111,
+  0b01110,
   0b10000,
-  0b11110,
+  0b11100,
   0b10000,
-  0b01111,
+  0b01110,
   0b00000
 };//укр. е
 const uint8_t ukr_II[8] PROGMEM = {
