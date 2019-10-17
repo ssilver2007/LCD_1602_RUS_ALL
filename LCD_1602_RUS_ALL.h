@@ -135,6 +135,12 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     {
       if (ascii == 168) *char_utf8 = 0x401; //код ASCII буквы Ё (0xA8)
       else if (ascii == 184) *char_utf8 = 0x451; //код ASCII буквы ё (0xB8)
+      else if (ascii == 165) *char_utf8 = 0x490; //код Ukr. ASCII буквы Г (0xA5)
+      else if (ascii == 180) *char_utf8 = 0x491; //код Ukr. ASCII буквы г (0xB4)
+      else if (ascii == 170) *char_utf8 = 0x404; //код Ukr. ASCII буквы Е (0xAA)
+      else if (ascii == 186) *char_utf8 = 0x454; //код Ukr. ASCII буквы е (0xBA)
+      else if (ascii == 175) *char_utf8 = 0x407; //код Ukr. ASCII буквы I (0xAF)
+      else if (ascii == 191) *char_utf8 = 0x457; //код Ukr. ASCII буквы i (0xBF)
       else if (ascii >= 192) //остальные буквы русского алфавита
       {
         *char_utf8 = ascii + 848;
@@ -147,10 +153,17 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     //*ascii - указатель на массив из двух байт
     wchar_t *ascii_utf8(unsigned char *ascii)
     {
-      if ((ascii[0] == 0xD0) || (ascii[0] == 0xD1))
+      //if ((ascii[0] == 0xD0) || (ascii[0] == 0xD1))
+      if (ascii[0] > 0x7F)
       {//Кириллица
         if ((ascii[0] == 0xD0)&&(ascii[1] == 0x81)) *char_utf8 = 0x401; //код ASCII буквы Ё (0xD081)
         else if ((ascii[0] == 0xD1)&&(ascii[1] == 0x91)) *char_utf8 = 0x451; //код ASCII буквы ё (0xD191)
+        else if ((ascii[0] == 0xD2)&&(ascii[1] == 0x90)) *char_utf8 = 0x490; //код Ukr. ASCII буквы Г (0xD290)
+        else if ((ascii[0] == 0xD2)&&(ascii[1] == 0x91)) *char_utf8 = 0x491; //код Ukr. ASCII буквы г (0xD291)
+        else if ((ascii[0] == 0xD0)&&(ascii[1] == 0x84)) *char_utf8 = 0x404; //код Ukr. ASCII буквы Е (0xD084)
+        else if ((ascii[0] == 0xD1)&&(ascii[1] == 0x94)) *char_utf8 = 0x454; //код Ukr. ASCII буквы е (0xD194)
+        else if ((ascii[0] == 0xD0)&&(ascii[1] == 0x87)) *char_utf8 = 0x407; //код Ukr. ASCII буквы I (0xD087)
+        else if ((ascii[0] == 0xD1)&&(ascii[1] == 0x97)) *char_utf8 = 0x457; //код Ukr. ASCII буквы i (0xD087)
         else if ((ascii[0] == 0xD0)&&(ascii[1] >= 0x90)&&(ascii[1] <= 0xBF)) //остальные буквы русского алфавита (А...Я а...п)
         {
           *char_utf8 = ascii[1] + 896;
