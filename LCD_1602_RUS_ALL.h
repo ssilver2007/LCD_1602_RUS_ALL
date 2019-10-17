@@ -177,9 +177,9 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       {
         x = getCursorCol();
         y = getCursorRow();
-        createChar(symbol_index, (uint8_t *)array);// Создаем символ на текущем (по очереди) месте в знакогенераторе (от 0 до MAX_SYMBOL_COUNT)
+        BASE::createChar(symbol_index, (uint8_t *)array);// Создаем символ на текущем (по очереди) месте в знакогенераторе (от 0 до MAX_SYMBOL_COUNT)
         setCursor(x, y);
-        write(symbol_index);// Выводим символ на экран
+        BASE::write(symbol_index);// Выводим символ на экран
         //Запомианем, что букве соответствует определенный индекс
         *index = symbol_index;
         symbol_index++;
@@ -190,7 +190,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         }
       }
       else   //Иначе печатаем уже существующий
-        write(*index);
+        BASE::write(*index);
     }
 
     void ResetAllIndex()
