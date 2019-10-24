@@ -49,7 +49,7 @@ class Symbol {
 
       for (uint8_t i = 0; i < ((sizeof(symbol_image)) / (sizeof(symbol_image[0]))); i++)
       {
-        memcpy_PF(&_tmp_unicode, (_uint_farptr_t)symbol_image[i]._unicode, sizeof(_tmp_unicode));//Загрузка значения из дальней памяти
+        memcpy_PF(&_tmp_unicode, (_uint_farptr_t)&symbol_image[i]._unicode, sizeof(_tmp_unicode));//Загрузка значения из дальней памяти
         if (_tmp_unicode == code)
           return (_uint_farptr_t)symbol_image[i]._rastr;
       }
