@@ -53,7 +53,7 @@ class Symbol {
         if (_tmp_unicode == code)
           return (_uint_farptr_t)symbol_image[i]._rastr;
       }
-      return 0xFF;//Возвращает 255 при отсутствии совпадения (ошибка)
+      return (_uint_farptr_t)0xFF;//Возвращает 255 при отсутствии совпадения (ошибка)
     }
     
     uint8_t index;
