@@ -185,7 +185,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       }
     }
 
-    template <typename T> void print(T val, int base)
+    template <typename T> void print(T val, int base = DEC)
     {
       cursor_col += BASE::print(val, base);
     }
