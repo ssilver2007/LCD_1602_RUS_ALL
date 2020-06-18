@@ -295,7 +295,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         //Запомианем, что букве соответствует определенный индекс
         *index = symbol_index;
         symbol_index++;
-        if (symbol_index >= max_symbol_count)
+        if (symbol_index > max_symbol_count)
         {
           ResetAllIndex();
         }
