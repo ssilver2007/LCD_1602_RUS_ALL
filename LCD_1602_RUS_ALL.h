@@ -226,7 +226,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       }
       else char_utf8 = ascii;
 
-      return char_utf8;
+      return &char_utf8;
     }
     //Перевод символа из кодировки ASCII в UTF-8 (для печати расширенных русских символов на LCD)
     //*ascii - указатель на массив из двух байт
@@ -255,7 +255,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       { //Латиница
         char_utf8 = ascii[0];
       }
-      return char_utf8;
+      return &char_utf8;
     }
 
 
