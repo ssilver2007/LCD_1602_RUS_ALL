@@ -10,14 +10,16 @@ LCD_1602_RUS <LiquidCrystal_I2C> lcd(0x27, 16, 2);
 void setup()
 {
   String str;
-  str = "язык";
+  str = ". Hexadecimal";
 
   lcd.init(); // Инициализация LCD
   // Печать сообщения на LCD
   lcd.backlight();
-  lcd.setCursor(4, 0);
-  lcd.print("Русский");
-  lcd.setCursor(6, 1);
+  lcd.setCursor(0, 0);
+  lcd.print(1, DEC);
+  lcd.print(". Десятичная");
+  lcd.setCursor(0, 1);
+  lcd.print(15, HEX);
   lcd.print(str);
 }
 
