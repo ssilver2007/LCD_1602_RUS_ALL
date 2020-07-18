@@ -24,14 +24,16 @@ LCD_1602_RUS <LiquidCrystal> lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
 void setup()
 {
   String str;
-  str = "язык";
+  str = ". Hexadecimal";
 
   // set up the LCD's number of columns and rows:
   lcd.begin(16, 2);
   // Print a message to the LCD.
-  lcd.setCursor(4, 0);
-  lcd.print("Русский");
-  lcd.setCursor(6, 1);
+  lcd.setCursor(0, 0);
+  lcd.print(1, DEC);
+  lcd.print(". Десятичная");
+  lcd.setCursor(0, 1);
+  lcd.print(15, HEX);
   lcd.print(str);
 }
 
