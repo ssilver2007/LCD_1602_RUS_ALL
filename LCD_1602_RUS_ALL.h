@@ -195,6 +195,12 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       return char_utf8;
     }
 
+    void ResetAllIndex()
+    {
+      symbol_index = 0;
+      for (uint8_t i = 0; i < ((sizeof(font)) / (sizeof(font[0]))); i++)
+        font[i].index = 255;
+    }
 
   private:
     void Init(uint8_t _user_custom_symbols)//Инициализация конструктора
@@ -237,13 +243,6 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       }
       else   //Иначе печатаем уже существующий
         BASE::write(*index);
-    }
-
-    void ResetAllIndex()
-    {
-      symbol_index = 0;
-      for (uint8_t i = 0; i < ((sizeof(font)) / (sizeof(font[0]))); i++)
-        font[i].index = 255;
     }
 
     void printwc(const wchar_t _chr) {
