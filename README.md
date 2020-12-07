@@ -6,6 +6,8 @@ Arduino библиотека поддержки кириллицы для дис
 Добавлена поддержка букв украинского языка.
 
 При использовании подключения по I2C должна быть установлена базовая библиотека LiquidCrystal_I2C. Например, может быть рекомендована эта: https://github.com/marcoschwartz/LiquidCrystal_I2C
+или эта:
+https://github.com/johnrickman/LiquidCrystal_I2C
 
 
 Файлы примеров:
