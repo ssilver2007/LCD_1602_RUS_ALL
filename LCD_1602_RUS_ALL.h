@@ -76,6 +76,13 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       Init(user_custom_symbols);
     }
 
+#ifdef FDB_LIQUID_CRYSTAL_I2C_H
+    void init()
+    {
+      begin();
+    }
+#endif    
+
     void print(const wchar_t* _str)
     {
       int current_char  = 0;
