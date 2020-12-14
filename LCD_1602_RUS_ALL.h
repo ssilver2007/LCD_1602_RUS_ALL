@@ -13,7 +13,11 @@
 #include "WProgram.h"
 #endif
 
-#include <avr/pgmspace.h>
+#ifdef ESP8266
+  #include <pgmspace.h>
+#else
+  #include <avr/pgmspace.h>
+#endif
 #if (_LCD_TYPE == 1) //Подключение по I2C
 #include <LiquidCrystal_I2C.h>
 #elif (_LCD_TYPE == 2) //Подключение 10-контактное
