@@ -24,15 +24,15 @@
 #include <LiquidCrystal.h>
 #endif
 #include <Print.h>
+#include <Wire.h>
 #include "font_LCD_1602_RUS.h"
 
-#define BYTE 0
 #ifdef ARDUINO_ARCH_AVR
 typedef uint32_t _uint_farptr_t;
 #else
 typedef uint8_t* _uint_farptr_t;
 #ifndef memcpy_PF
-#define memcpy_PF(dest, src, len) memcpy((dest), (src), (len))
+#define memcpy_PF(dest, src, len) memcpy_P((dest), (src), (len))
 #endif
 #endif
 
@@ -72,20 +72,34 @@ template <class BASE> class LCD_1602_RUS : public BASE {
   public:
     LCD_1602_RUS (uint8_t lcd_Addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t user_custom_symbols = 0) : BASE (lcd_Addr, lcd_cols, lcd_rows)//Конструктор для подключения I2C
     {
-      Init(user_custom_symbols);
+	  init_priv(user_custom_symbols);
     }
     LCD_1602_RUS (uint8_t rs,  uint8_t enable,
                   uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t user_custom_symbols = 0) : BASE (rs, enable, d0, d1, d2, d3)//Конструктор для подключения 10-pin
     {
-      Init(user_custom_symbols);
+      init_priv(user_custom_symbols);
     }
 
 #ifdef FDB_LIQUID_CRYSTAL_I2C_H
+  #if defined(ARDUINO_ESP8266_ESP01) //Для ESP8266-01
+    void init(uint8_t _sda = SDA, uint8_t _scl = SCL)
+    {
+	  Wire.pins(_sda, _scl);
+      BASE::begin();
+    }
+  #else
     void init()
     {
-      begin();
+      BASE::begin();
     }
-#endif    
+  #endif
+#elif defined(ARDUINO_ESP8266_ESP01)  //Для ESP8266-01
+  void init(uint8_t _sda = SDA, uint8_t _scl = SCL)
+  {
+    Wire.pins(_sda, _scl);
+    BASE::init();
+  }
+#endif
 
     void print(const wchar_t* _str)
     {
@@ -214,7 +228,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     }
 
   private:
-    void Init(uint8_t _user_custom_symbols)//Инициализация конструктора
+    void init_priv(uint8_t _user_custom_symbols)//Инициализация конструктора
     {
       max_symbol_count = 8 - _user_custom_symbols;
       cursor_col = 0;
@@ -353,7 +367,8 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     uint8_t cursor_col;
     uint8_t cursor_row;
     wchar_t char_utf8[2] = {0};
-    Symbol font[53] = { //Переменная font - набор изменияемых символов
+    Symbol font[53] =
+	{ //Переменная font - набор изменияемых символов
       1041, //Б
       1043, //Г
       1044, //Д
