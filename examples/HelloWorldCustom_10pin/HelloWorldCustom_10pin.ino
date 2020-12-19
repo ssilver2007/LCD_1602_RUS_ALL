@@ -19,7 +19,7 @@
 #include <LCD_1602_RUS_ALL.h>
 
 //Выделим два переопределяемых символа
-LCD_1602_RUS <LiquidCrystal> lcd(8, 9, 4, 5, 6, 7, 2);//For LCD Keypad Shield
+LCD_1602_RUS lcd(8, 9, 4, 5, 6, 7, 2);//For LCD Keypad Shield
 //                                                ^^^ количество пользовательских символов
 //LCD_1602_RUS <LiquidCrystal> lcd(12, 11, 5, 4, 3, 2, 2);
 //                                                    ^^^ количество пользовательских символов
@@ -45,8 +45,7 @@ uint8_t symbol_two[8] = {
   B10000,
 };
 
-void setup()
-{
+void setup() {
   //Настраиваем LCD 16 символов в 2 строках
   lcd.begin(16, 2);
 
@@ -65,6 +64,5 @@ void setup()
   lcd.write(7);
 }
 
-void loop()
-{
+void loop() {
 }
