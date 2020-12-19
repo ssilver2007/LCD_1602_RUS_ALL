@@ -19,11 +19,9 @@
   #include <avr/pgmspace.h>
 #endif
 #if (_LCD_TYPE == 1) //Подключение по I2C
-//#include <LiquidCrystal_I2C.h>
 #define LCD_LIB LiquidCrystal_I2C
 #define LCD_LIB_H <LiquidCrystal_I2C.h>
 #elif (_LCD_TYPE == 2) //Подключение 10-контактное
-//#include <LiquidCrystal.h>
 #define LCD_LIB LiquidCrystal
 #define LCD_LIB_H <LiquidCrystal.h>
 #endif
