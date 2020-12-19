@@ -6,7 +6,7 @@
 #include <LCD_1602_RUS_ALL.h>
 
 //Выделим два переопределяемых символа
-LCD_1602_RUS <LiquidCrystal_I2C> lcd(0x27, 16, 2, 2);
+LCD_1602_RUS lcd(0x27, 16, 2, 2);
 //                                               ^^^ количество пользовательских символов
 
 uint8_t symbol_one[8] = {
@@ -30,8 +30,7 @@ uint8_t symbol_two[8] = {
   B10000,
 };
 
-void setup()
-{
+void setup() {
   lcd.init(); // Инициализация LCD
   // Печать сообщения на LCD
   lcd.backlight();
@@ -49,6 +48,5 @@ void setup()
   lcd.write(7);
 }
 
-void loop()
-{
+void loop() {
 }
