@@ -19,10 +19,15 @@
   #include <avr/pgmspace.h>
 #endif
 #if (_LCD_TYPE == 1) //Подключение по I2C
-#include <LiquidCrystal_I2C.h>
+//#include <LiquidCrystal_I2C.h>
+#define LCD_LIB LiquidCrystal_I2C
+#define LCD_LIB_H <LiquidCrystal_I2C.h>
 #elif (_LCD_TYPE == 2) //Подключение 10-контактное
-#include <LiquidCrystal.h>
+//#include <LiquidCrystal.h>
+#define LCD_LIB LiquidCrystal
+#define LCD_LIB_H <LiquidCrystal.h>
 #endif
+#include LCD_LIB_H
 #include <Print.h>
 #include <Wire.h>
 #include "font_LCD_1602_RUS.h"
@@ -68,41 +73,38 @@ class Symbol {
 //Символы с индексом от 0 до (7 - user_custom_symbols) используются библиотекой
 //Символы с индексом от (8 - user_custom_symbols) до 7 - можно переопределять пользователю
 //По умолчанию количество переопределяемых символов равно 0
-template <class BASE> class LCD_1602_RUS : public BASE {
+class LCD_1602_RUS : public LCD_LIB {
   public:
-    LCD_1602_RUS (uint8_t lcd_Addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t user_custom_symbols = 0) : BASE (lcd_Addr, lcd_cols, lcd_rows)//Конструктор для подключения I2C
-    {
-	  init_priv(user_custom_symbols);
+    #if (_LCD_TYPE == 1)
+    LCD_1602_RUS (uint8_t lcd_Addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t user_custom_symbols = 0) : LCD_LIB (lcd_Addr, lcd_cols, lcd_rows) { //Конструктор для подключения I2C
+		init_priv(user_custom_symbols);
     }
+    #elif (_LCD_TYPE == 2)
     LCD_1602_RUS (uint8_t rs,  uint8_t enable,
-                  uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t user_custom_symbols = 0) : BASE (rs, enable, d0, d1, d2, d3)//Конструктор для подключения 10-pin
-    {
-      init_priv(user_custom_symbols);
+                  uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t user_custom_symbols = 0) : LCD_LIB (rs, enable, d0, d1, d2, d3) { //Конструктор для подключения 10-pin
+        init_priv(user_custom_symbols);
     }
+    #endif
 
 #ifdef FDB_LIQUID_CRYSTAL_I2C_H
   #if defined(ARDUINO_ESP8266_ESP01) //Для ESP8266-01
-    void init(uint8_t _sda = SDA, uint8_t _scl = SCL)
-    {
+    void init(uint8_t _sda = SDA, uint8_t _scl = SCL) {
 	  Wire.pins(_sda, _scl);
-      BASE::begin();
+      LCD_LIB::begin();
     }
   #else
-    void init()
-    {
-      BASE::begin();
+    void init() {
+      LCD_LIB::begin();
     }
   #endif
 #elif defined(ARDUINO_ESP8266_ESP01)  //Для ESP8266-01
-  void init(uint8_t _sda = SDA, uint8_t _scl = SCL)
-  {
+  void init(uint8_t _sda = SDA, uint8_t _scl = SCL) {
     Wire.pins(_sda, _scl);
-    BASE::init();
+    LCD_LIB::init();
   }
 #endif
 
-    void print(const wchar_t* _str)
-    {
+    void print(const wchar_t* _str) {
       int current_char  = 0;
       int size = 0;
 
@@ -145,35 +147,31 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       }
     }
 
-    template <typename T> void print(T val, int base)
-    {
-      cursor_col += BASE::print(val, base);
+    template <typename T> void print(T val, int base) {
+      cursor_col += LCD_LIB::print(val, base);
     }
 
-    void clear()
-    {
-      BASE::clear();
+    void clear() {
+      LCD_LIB::clear();
       ResetAllIndex();
     }
 
-    void setCursor(uint8_t col, uint8_t row)
-    {
+    void setCursor(uint8_t col, uint8_t row) {
       cursor_col = col;
       cursor_row = row;
-      BASE::setCursor(cursor_col, cursor_row);
+      LCD_LIB::setCursor(cursor_col, cursor_row);
     }
-    uint8_t getCursorCol()
-    {
+    
+	uint8_t getCursorCol() {
       return cursor_col;
     }
-    uint8_t getCursorRow()
-    {
+	
+    uint8_t getCursorRow() {
       return cursor_row;
     }
 
     //Перевод символа из кодировки ASCII в Win1251 (для печати расширенных русских символов на LCD)
-    wchar_t *ascii_win1251(unsigned char ascii)
-    {
+    wchar_t *ascii_win1251(unsigned char ascii) {
       if (ascii == 168) *char_utf8 = 0x401; //код ASCII буквы Ё (0xA8)
       else if (ascii == 184) *char_utf8 = 0x451; //код ASCII буквы ё (0xB8)
       else if (ascii == 165) *char_utf8 = 0x490; //код Ukr. ASCII буквы Г (0xA5)
@@ -192,8 +190,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     }
     //Перевод символа из кодировки ASCII в UTF-8 (для печати расширенных русских символов на LCD)
     //*ascii - указатель на массив из двух байт
-    wchar_t *ascii_utf8(unsigned char *ascii)
-    {
+    wchar_t *ascii_utf8(unsigned char *ascii) {
       if (ascii[0] > 0x7F)
       { //Кириллица
         if ((ascii[0] == 0xD0) && (ascii[1] == 0x81)) *char_utf8 = 0x401; //код ASCII буквы Ё (0xD081)
@@ -220,25 +217,22 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       return char_utf8;
     }
 
-    void ResetAllIndex()
-    {
+    void ResetAllIndex() {
       symbol_index = 0;
       for (uint8_t i = 0; i < ((sizeof(font)) / (sizeof(font[0]))); i++)
         font[i].index = 255;
     }
 
   private:
-    void init_priv(uint8_t _user_custom_symbols)//Инициализация конструктора
-    {
+    void init_priv(uint8_t _user_custom_symbols) { //Инициализация конструктора
       max_symbol_count = 8 - _user_custom_symbols;
       cursor_col = 0;
       cursor_row = 0;
       ResetAllIndex();//Сброс значений индексов (неинициализированы = 255)
     }
 
-    uint8_t getIndex(uint16_t unicode)//Функция возвращает индекс символа в массиве font по передаваемому в функцию коду unicode
+    uint8_t getIndex(uint16_t unicode) { //Функция возвращает индекс символа в массиве font по передаваемому в функцию коду unicode
     //unicode - код символа в unicode
-    {
       for (uint8_t i = 0; i < ((sizeof(font)) / (sizeof(font[0]))); i++)
       {
         if (unicode == font[i].code)
@@ -247,17 +241,16 @@ template <class BASE> class LCD_1602_RUS : public BASE {
       return 0xFF;//Возвращает 255 при отсутствии совпадения (ошибка)
     }
 
-    void CharSetToLCD(uint8_t *array, uint8_t *index)//Загрузка растрового изображения символа в LCD
-    {
+    void CharSetToLCD(uint8_t *array, uint8_t *index) { //Загрузка растрового изображения символа в LCD
       uint8_t x, y;
 
       if (*index == 255) // Если символ еще не создан, то создаем
       {
         x = getCursorCol();
         y = getCursorRow();
-        BASE::createChar(symbol_index, (uint8_t *)array);// Создаем символ на текущем (по очереди) месте в знакогенераторе (от 0 до MAX_SYMBOL_COUNT)
+        LCD_LIB::createChar(symbol_index, (uint8_t *)array);// Создаем символ на текущем (по очереди) месте в знакогенераторе (от 0 до MAX_SYMBOL_COUNT)
         setCursor(x, y);
-        BASE::write(symbol_index);// Выводим символ на экран
+        LCD_LIB::write(symbol_index);// Выводим символ на экран
         //Запомианем, что букве соответствует определенный индекс
         *index = symbol_index;
         symbol_index++;
@@ -267,14 +260,14 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         }
       }
       else   //Иначе печатаем уже существующий
-        BASE::write(*index);
+        LCD_LIB::write(*index);
     }
 
     void printwc(const wchar_t _chr) {
       uint8_t rus_[8];
 
       if (_chr < 128) //Английский алфавит без изменения
-        BASE::print((char)_chr);
+        LCD_LIB::print((char)_chr);
       else
         //Кириллица
         //Единовременно может быть заменено только 8 символов
@@ -282,64 +275,64 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         {
           //Русский алфавит, использующий одинаковые с английским алфавитом символы
           case 1040: //А
-            BASE::print("A");
+            LCD_LIB::print("A");
             break;
           case 1042: //В
-            BASE::print("B");
+            LCD_LIB::print("B");
             break;
           case 1045: //Е
-            BASE::print("E");
+            LCD_LIB::print("E");
             break;
           case 1025: //Ё
-            BASE::print("E");
+            LCD_LIB::print("E");
             break;
           case 1050: //К
-            BASE::print("K");
+            LCD_LIB::print("K");
             break;
           case 1052: //M
-            BASE::print("M");
+            LCD_LIB::print("M");
             break;
           case 1053: //H
-            BASE::print("H");
+            LCD_LIB::print("H");
             break;
           case 1054: //O
-            BASE::print("O");
+            LCD_LIB::print("O");
             break;
           case 1056: //P
-            BASE::print("P");
+            LCD_LIB::print("P");
             break;
           case 1057: //C
-            BASE::print("C");
+            LCD_LIB::print("C");
             break;
           case 1058: //T
-            BASE::print("T");
+            LCD_LIB::print("T");
             break;
           case 1061: //X
-            BASE::print("X");
+            LCD_LIB::print("X");
             break;
           case 1072: //а
-            BASE::print("a");
+            LCD_LIB::print("a");
             break;
           case 1077: //е
-            BASE::print("e");
+            LCD_LIB::print("e");
             break;
           case 1086: //o
-            BASE::print("o");
+            LCD_LIB::print("o");
             break;
           case 1088: //p
-            BASE::print("p");
+            LCD_LIB::print("p");
             break;
           case 1089: //c
-            BASE::print("c");
+            LCD_LIB::print("c");
             break;
           case 1091: //y
-            BASE::print("y");
+            LCD_LIB::print("y");
             break;
           case 1093: //x
-            BASE::print("x");
+            LCD_LIB::print("x");
             break;
           case 0x00B0: //Знак градуса
-            BASE::write(223);
+            LCD_LIB::write(223);
             break;
           default:
             //Русский алфавит, требующий новых символов
@@ -349,8 +342,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
         }
     }
 
-    uint8_t mbtowc(wchar_t *_chr, char *_str, uint8_t mb_num)
-    {
+    uint8_t mbtowc(wchar_t *_chr, char *_str, uint8_t mb_num) {
       if (mb_num != 2) return 0;
       if ((_str[0] & 0xC0) == 0xC0 && (_str[1] & 0x80) == 0x80) {
         *_chr = ((_str[0] & 0x1F) << 6) + (_str[1] & 0x3F);
@@ -367,8 +359,7 @@ template <class BASE> class LCD_1602_RUS : public BASE {
     uint8_t cursor_col;
     uint8_t cursor_row;
     wchar_t char_utf8[2] = {0};
-    Symbol font[53] =
-	{ //Переменная font - набор изменияемых символов
+    Symbol font[53] = { //Переменная font - набор изменияемых символов
       1041, //Б
       1043, //Г
       1044, //Д
