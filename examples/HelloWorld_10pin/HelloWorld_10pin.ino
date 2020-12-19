@@ -18,11 +18,10 @@
 #define _LCD_TYPE 2
 #include <LCD_1602_RUS_ALL.h>
 
-//LCD_1602_RUS <LiquidCrystal> lcd(12, 11, 5, 4, 3, 2);
-LCD_1602_RUS <LiquidCrystal> lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
+//LCD_1602_RUS lcd(12, 11, 5, 4, 3, 2);
+LCD_1602_RUS lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
 
-void setup()
-{
+void setup() {
   String str;
   str = ". Hexadecimal";
 
@@ -37,6 +36,5 @@ void setup()
   lcd.print(str);
 }
 
-void loop()
-{
+void loop() {
 }
