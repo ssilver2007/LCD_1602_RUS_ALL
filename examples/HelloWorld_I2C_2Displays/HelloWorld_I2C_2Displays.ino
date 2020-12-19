@@ -5,16 +5,17 @@
 #define _LCD_TYPE 1
 #include <LCD_1602_RUS_ALL.h>
 
-LCD_1602_RUS <LiquidCrystal_I2C> lcd1(0x3B, 16, 2);
-LCD_1602_RUS <LiquidCrystal_I2C> lcd2(0x3F, 16, 2);
+LCD_1602_RUS lcd1(0x3B, 16, 2);
+LCD_1602_RUS lcd2(0x3F, 16, 2);
 
-void setup()
-{
+void setup() {
   String str;
   str = "система";
 
-  lcd1.init(); // Инициализация LCD №1
+  lcd1.init(); //Инициализация LCD (по умолчанию для ESP8266: 4 - SDA, 5 - SCL)
+  //lcd1.init(0, 2); //ESP8266-01 I2C: 0 - SDA, 2 - SCL
   lcd2.init(); // Инициализация LCD №2
+  
   // Печать сообщения на LCD №1
   lcd1.backlight();
   lcd1.setCursor(3, 0);
