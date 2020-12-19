@@ -5,10 +5,9 @@
 #define _LCD_TYPE 1
 #include <LCD_1602_RUS_ALL.h>
 
-LCD_1602_RUS <LiquidCrystal_I2C> lcd(0x27, 16, 2);
+LCD_1602_RUS lcd(0x27, 16, 2);
 
-void setup()
-{
+void setup() {
   String str;
   str = ". Hexadecimal";
 
@@ -23,6 +22,5 @@ void setup()
   lcd.print(str);
 }
 
-void loop()
-{
+void loop() {
 }
