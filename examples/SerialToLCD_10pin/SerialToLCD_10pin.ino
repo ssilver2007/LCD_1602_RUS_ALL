@@ -18,10 +18,9 @@
 #define _LCD_TYPE 2
 #include <LCD_1602_RUS_ALL.h>
 
-LCD_1602_RUS <LiquidCrystal> lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
+LCD_1602_RUS lcd(8, 9, 4, 5, 6, 7 );//For LCD Keypad Shield
 
-void setup()
-{
+void setup() {
   lcd.begin(16, 2);
   lcd.print("Ввод с монитора");
   lcd.setCursor(0, 1);
