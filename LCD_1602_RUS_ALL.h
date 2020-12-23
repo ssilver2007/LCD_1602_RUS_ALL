@@ -14,9 +14,9 @@
 #endif
 
 #if defined(ESP8266) || defined(ESP32)
-  #include <pgmspace.h>
+#include <pgmspace.h>
 #else
-  #include <avr/pgmspace.h>
+#include <avr/pgmspace.h>
 #endif
 #if (_LCD_TYPE == 1) //Подключение по I2C
 #define LCD_LIB LiquidCrystal_I2C
@@ -73,33 +73,33 @@ class Symbol {
 //По умолчанию количество переопределяемых символов равно 0
 class LCD_1602_RUS : public LCD_LIB {
   public:
-    #if (_LCD_TYPE == 1)
+#if (_LCD_TYPE == 1)
     LCD_1602_RUS (uint8_t lcd_Addr, uint8_t lcd_cols, uint8_t lcd_rows, uint8_t user_custom_symbols = 0) : LCD_LIB (lcd_Addr, lcd_cols, lcd_rows) { //Конструктор для подключения I2C
-		init_priv(user_custom_symbols);
+      init_priv(user_custom_symbols);
     }
-    #elif (_LCD_TYPE == 2)
+#elif (_LCD_TYPE == 2)
     LCD_1602_RUS (uint8_t rs,  uint8_t enable,
                   uint8_t d0, uint8_t d1, uint8_t d2, uint8_t d3, uint8_t user_custom_symbols = 0) : LCD_LIB (rs, enable, d0, d1, d2, d3) { //Конструктор для подключения 10-pin
-        init_priv(user_custom_symbols);
+      init_priv(user_custom_symbols);
     }
-    #endif
+#endif
 
 #ifdef FDB_LIQUID_CRYSTAL_I2C_H
-  #if defined(ARDUINO_ESP8266_ESP01) //Для ESP8266-01
+#if defined(ARDUINO_ESP8266_ESP01) //Для ESP8266-01
     void init(uint8_t _sda = SDA, uint8_t _scl = SCL) {
-	  Wire.pins(_sda, _scl);
+      Wire.pins(_sda, _scl);
       LCD_LIB::begin();
     }
-  #else
+#else
     void init() {
       LCD_LIB::begin();
     }
-  #endif
+#endif
 #elif defined(ARDUINO_ESP8266_ESP01)  //Для ESP8266-01
-  void init(uint8_t _sda = SDA, uint8_t _scl = SCL) {
-    Wire.pins(_sda, _scl);
-    LCD_LIB::init();
-  }
+    void init(uint8_t _sda = SDA, uint8_t _scl = SCL) {
+      Wire.pins(_sda, _scl);
+      LCD_LIB::init();
+    }
 #endif
 
     void print(const wchar_t* _str) {
@@ -107,10 +107,11 @@ class LCD_1602_RUS : public LCD_LIB {
       int size = 0;
 
       //Определяем длину строки (количество символов)
-      while (_str[size] != 0)
+      size = wStrlen((uint8_t*)_str);
+      /*while (_str[size] != 0)
       {
         size++;
-      }
+      }*/
 
       while (current_char < size)
       {
@@ -159,13 +160,25 @@ class LCD_1602_RUS : public LCD_LIB {
       cursor_row = row;
       LCD_LIB::setCursor(cursor_col, cursor_row);
     }
-    
-	uint8_t getCursorCol() {
+
+    uint8_t getCursorCol() {
       return cursor_col;
     }
-	
+
     uint8_t getCursorRow() {
       return cursor_row;
+    }
+
+    //Возвращает длину строки для символов, кодируемых двумя и более байтами (unicode, UTF-8)
+    int wStrlen(uint8_t *data) {
+      int i = 0;
+      int count = 0;
+      while (data[i]) {
+        if ((data[i] & 0xC0) != 0x80)
+          count++;
+        i++;
+      }
+      return count;
     }
 
     //Перевод символа из кодировки ASCII в Win1251 (для печати расширенных русских символов на LCD)
@@ -230,7 +243,7 @@ class LCD_1602_RUS : public LCD_LIB {
     }
 
     uint8_t getIndex(uint16_t unicode) { //Функция возвращает индекс символа в массиве font по передаваемому в функцию коду unicode
-    //unicode - код символа в unicode
+      //unicode - код символа в unicode
       for (uint8_t i = 0; i < ((sizeof(font)) / (sizeof(font[0]))); i++)
       {
         if (unicode == font[i].code)
