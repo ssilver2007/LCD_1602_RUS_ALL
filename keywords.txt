@@ -22,6 +22,7 @@ getCursorRow  KEYWORD2
 ascii_win1251 KEYWORD2
 ascii_utf8  KEYWORD2
 ResetAllIndex  KEYWORD2
+wStrlen KEYWORD2
 
 ###########################################
 # Constants (LITERAL1)
