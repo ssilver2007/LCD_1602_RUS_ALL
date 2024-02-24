@@ -277,7 +277,7 @@ class LCD_1602_RUS : public LCD_LIB {
     void printwc(const wchar_t _chr) {
       uint8_t rus_[8];
 
-      if (_chr < 128) //Английский алфавит без изменения
+      if (_chr < 256) //Английский алфавит без изменения
         LCD_LIB::print((char)_chr);
       else
         //Кириллица
